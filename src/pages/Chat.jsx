@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getLLMResponse } from '../services/chatService';
 import './Chat.css';
+import { isCrisisMessage } from '../services/chatService';
 
 export default function Chat() {
   const [messages, setMessages] = useState([
@@ -14,6 +15,20 @@ export default function Chat() {
     const newMessage = { sender: 'user', text: input };
     setMessages([...messages, newMessage]);
     setInput('');
+
+    // 👉 Crisis Detection
+    if (isCrisisMessage(input)) {
+      const crisisReply = {
+        sender: 'bot',
+        text: "I'm really sorry you're feeling this way. You're not alone. Please consider contacting a crisis line or talking to someone you trust.",
+      };
+      const resources = {
+        sender: 'bot',
+        text: "📞 **Helpline:** 988 (U.S. Suicide & Crisis Lifeline)\n🌐 [Find local help](https://www.opencounseling.com/suicide-hotlines)",
+      };
+      setMessages(prev => [...prev, crisisReply, resources]);
+    return;
+  }
 
     const botReply = await getLLMResponse(input);
     setMessages(prev => [...prev, { sender: 'bot', text: botReply.text }]);
