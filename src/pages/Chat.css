@@ -1,41 +1,26 @@
-html {
-  box-sizing: border-box;
-  height: 100%;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-body {
-  min-height: 100%; 
-  width: 100%;
-  margin: 0;
-  padding: 0; 
-  background-color: #f3f4f6;
-  font-family: 'Helvetica Neue', sans-serif;
-}
-
 .page-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%; 
-  min-height: 100vh; 
-  padding: 1rem;
+  width: 600px; /* Define the fixed width here */
+  max-width: 100%; /* Responsive for smaller screens */
+  margin-left: auto; /* Center the wrapper */
+  margin-right: auto;
+  overflow: clip; /* Changed from hidden to clip */
+  contain: layout; /* Isolate layout */
+  position: relative; /* Create new stacking/formatting context */
 }
 
 .chat-container {
   display: flex;
   flex-direction: column;
   height: 85vh; 
-  width: 100%; 
-  max-width: 600px; 
-  margin: auto; 
-  padding: 1rem;
-  background: #ffffff;
+  width: 100%; /* Takes full width of .page-wrapper */
+  padding: 2rem; /* Standardized padding */
+  background: var(--chat-area-bg); /* Was #ffffff */
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Kept subtle shadow */
+  overflow: clip; /* Changed from hidden to clip */
+  box-sizing: border-box; /* Added for consistency */
+  contain: layout; /* Isolate layout */
+  position: relative; /* Create new stacking/formatting context */
 }
 
 .chat-header {
@@ -43,9 +28,12 @@ body {
   padding: 0.75rem;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #374151; /* Dark gray, good contrast on white */
-  border-bottom: 1px solid #e5e7eb; /* Light gray border */
+  color: var(--secondary-text); /* Was #374151 */
+  border-bottom: 1px solid var(--border-color); /* Was #e5e7eb */
   margin-bottom: 1rem;
+  max-width: 100%; /* Ensure header does not exceed parent's content width */
+  box-sizing: border-box; /* Include padding/border in max-width calculation */
+  overflow-x: clip; /* Prevent horizontal overflow */
 }
 
 .chat-messages {
@@ -53,46 +41,99 @@ body {
   flex-direction: column;
   flex: 1;
   overflow-y: auto;
+  overflow-x: clip; /* Changed from hidden to clip */
   margin-bottom: 1rem;
-  background: #f9fafb;
+  background: var(--page-bg); /* Was #f9fafb, now using lighter page background */
   padding: 1rem;
   border-radius: 8px;
+  min-height: 0; /* Prevent flex item from growing parent */
+  min-width: 0; /* Allow shrinking below content size in flex context */
+  width: 100%; /* Explicitly set width */
+  box-sizing: border-box; /* Ensure padding/border are included in width */
+  max-width: 100%; /* Ensure messages area does not exceed parent's content width */
+}
+
+/* Custom Scrollbar for .chat-messages (WebKit browsers) */
+.chat-messages::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: var(--page-bg); /* Or transparent, or var(--subtle-bg) */
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-text); /* Color of the scroll thumb */
+  border-radius: 4px; /* Roundness of the scroll thumb */
+  border: 2px solid var(--page-bg); /* Creates padding around thumb, using page background */
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-text); /* Darker on hover */
 }
 
 .chat-message {
-  margin-bottom: 0.75rem;
-  padding: 0.75rem;
-  border-radius: 10px;
-  max-width: 80%;
-  line-height: 1.5;
-  font-size: 0.95rem;
-  white-space: pre-wrap;
+  display: flex; /* Make the bubble a flex container */
+  flex-direction: column; /* Stack its children (the wrapper) vertically */
+  padding: 0.75rem 1rem; /* Bubble padding */
+  border-radius: 18px; /* More rounded bubbles */
+  margin-bottom: 0.75rem; /* Consistent margin */
+  max-width: 85%; /* Adjusted for better visual balance */
+  min-width: 0; /* Added to help flex item sizing */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03); /* Softer shadow */
+  box-sizing: border-box; /* Re-added to include padding/border in max-width */
+  /* contain: layout; */ /* REMOVED to allow more standard reflow */
 }
 
-.chat-message.bot {
-  background-color: #e0f2fe;
-  align-self: flex-start;
-  color: #1e3a8a;
-  text-align: left; /* Ensure text content is left-aligned */
+.message-content-wrapper {
+  display: block; /* REVERTED from inline-block */
+  width: 100%; /* Take full width of the parent .chat-message padding box */
+  height: auto; /* Let content define height */
+  overflow: hidden; /* Crucial for containing text within this wrapper */
+  font-size: 0.95rem;
+  line-height: 1.6; /* RESTORED for better readability */
+  /* Default text alignment will be inherited or can be set if needed */
+}
+
+.chat-message.user .message-content-wrapper {
+  white-space: pre-wrap;    /* Respect newlines, wrap naturally */
+  overflow-wrap: break-word; /* Break long words if necessary */
+}
+
+.chat-message.bot .message-content-wrapper {
+  text-align: left; /* Retain left alignment for bot messages */
+  white-space: pre-wrap;    /* Respect newlines */
+  overflow-wrap: break-word; /* Use this for wrapping, like user messages */
 }
 
 .chat-message.user {
-  background-color: #d9f99d;
+  background-color: var(--user-message-bg); /* Was #d9f99d */
   align-self: flex-end;
-  color: #374151;
+  color: var(--user-message-text); /* Was #374151, now specific green */
+  text-align: left; /* User messages can also be left-aligned within their bubble */
+}
+
+.chat-message.bot {
+  background-color: var(--bot-message-bg); /* Was #e0f2fe */
+  align-self: flex-start;
+  color: var(--bot-message-text); /* Was #1e3a8a */
+  /* text-align: left; */ /* Moved to .chat-message.bot .message-content-wrapper */
 }
 
 .typing-indicator {
   display: flex;
+  flex-direction: row; /* Explicitly ensure horizontal layout */
+  justify-content: flex-start; /* Align dots to the start of the container */
   align-items: center;
-  padding: 0.75rem; /* Match chat-message padding */
+  padding: 0.75rem; 
 }
 
 .typing-indicator span {
   height: 8px;
   width: 8px;
   margin: 0 2px;
-  background-color: #9ca3af; /* A muted gray */
+  background-color: var(--placeholder-text); /* Was #9ca3af (muted gray) */
   border-radius: 50%;
   opacity: 0.4;
   animation: typing-dots 1.4s infinite ease-in-out both;
@@ -120,27 +161,45 @@ body {
 .chat-input {
   display: flex;
   gap: 0.5rem;
-  padding-top: 0.5rem;
+  padding-top: 0.5rem; /* Consider adding padding-bottom for symmetry if not already handled by container */
+  width: 100%; /* Ensure it respects parent's width */
+  box-sizing: border-box; /* Include padding in its own width calculation */
+  max-width: 100%; /* Ensure input area does not exceed parent's content width */
+  overflow-x: clip; /* Prevent horizontal overflow */
 }
 
 .chat-input input {
   flex: 1;
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 0.75rem; /* Increased padding slightly for better touch/click area */
+  border-radius: 8px; /* Slightly more rounded corners */
+  border: 1px solid var(--border-color); /* Was #ccc */
   font-size: 1rem;
+  background-color: var(--chat-area-bg); /* Match chat area bg */
+  color: var(--primary-text);
+  min-width: 0; /* Allow input to shrink in flex layout */
+}
+
+.chat-input input::placeholder {
+  color: var(--placeholder-text);
+  opacity: 1; /* Ensure placeholder is not too faint */
 }
 
 .chat-input button {
-  padding: 0.6rem 1rem;
+  padding: 0.75rem 1.2rem; /* Adjusted padding */
   border: none;
-  background-color: #10b981;
-  color: white;
+  background-color: var(--action-primary); /* Was #10b981 */
+  color: var(--chat-area-bg); /* White text on action color */
   font-weight: bold;
-  border-radius: 6px;
+  border-radius: 8px; /* Match input field */
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .chat-input button:hover {
-  background-color: #059669;
+  background-color: var(--action-primary-hover); /* Was #059669 */
+}
+
+.chat-input button:disabled {
+  background-color: var(--placeholder-text); /* Muted color for disabled state */
+  cursor: not-allowed;
 }

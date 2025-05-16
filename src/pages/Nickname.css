@@ -1,43 +1,26 @@
 /* Nickname.css */
 
-/* Inherit general page layout from Landing.css or a shared global CSS */
-/* For demonstration, we'll copy relevant page-wrapper and content-box styles */
-/* In a real app, these would ideally be in a more global stylesheet */
-
-.nickname-page-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%; 
-  min-height: 100vh; 
-  padding: 1rem;
-  background-color: #f3f4f6; /* Match Landing/Chat page background */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  box-sizing: border-box;
-}
-
-.nickname-page-wrapper *, .nickname-page-wrapper *::before, .nickname-page-wrapper *::after {
-    box-sizing: inherit;
-}
-
 .nickname-content-box {
   display: flex;
   flex-direction: column;
-  height: 85vh; /* Match Landing/Chat page container height */
+  height: 85vh; 
   width: 100%; 
-  max-width: 600px; /* Match Landing/Chat page container max-width */
+  max-width: 600px; 
   margin: auto; 
-  padding: 1.5rem 2rem; /* Slightly more padding perhaps */
-  background: #ffffff; 
+  padding: 2rem; 
+  background: var(--chat-area-bg); 
   border-radius: 12px; 
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); 
   text-align: center;
+  font-family: inherit;
+  box-sizing: border-box; 
+  overflow: hidden; 
 }
 
 .nickname-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Pushes terms text to bottom */
+  justify-content: space-between; 
   align-items: center;
   height: 100%;
   width: 100%;
@@ -46,20 +29,20 @@
 .header-text h1 {
   font-size: 2em; 
   font-weight: 600;
-  color: #4A4A4A; 
+  color: var(--secondary-text); 
   margin: 0 0 10px 0;
 }
 
 .header-text .catbird-name {
-  color: #007BFF; 
+  color: var(--action-primary); 
   font-weight: 700;
 }
 
 .header-text p {
   font-size: 1em;
-  color: #555;
+  color: var(--primary-text); 
   line-height: 1.6;
-  margin-bottom: 2rem; /* Space before nickname input area */
+  margin-bottom: 2rem; 
   max-width: 380px;
   margin-left: auto;
   margin-right: auto;
@@ -67,92 +50,98 @@
 
 .nickname-input-area {
   position: relative;
-  margin-top: 1rem; /* Space above input */
-  margin-bottom: auto; /* Pushes this section up if space allows */
+  margin-top: 1rem; 
+  margin-bottom: auto; 
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 350px; /* Control width of input area */
+  max-width: 350px; 
 }
 
 .catbird-peek {
   position: absolute;
-  top: -50px; /* Adjust to make the SVG peek over the input */
+  top: -50px; 
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
 }
 
-.logo-small {
-  width: 80px; 
-  height: 80px;
-}
-
 .nickname-input {
   width: 100%;
   padding: 15px 20px;
-  padding-left: 20px; /* Default padding */
   font-size: 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 30px; /* Rounded input field like example */
-  background-color: #f8f9fa; /* Light background for input */
+  border: 1px solid var(--border-color); 
+  border-radius: 30px; 
+  background-color: var(--page-bg); 
   text-align: center;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  color: var(--primary-text);
   position: relative;
   z-index: 0;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.nickname-input::placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+
 .nickname-input:focus {
   outline: none;
-  border-color: #007BFF;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 0 0 2px rgba(0, 123, 255, 0.2);
+  border-color: var(--action-primary); 
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 0 0 2px var(--action-primary-hover); 
 }
 
 .proceed-nickname-button {
-    background-color: #FF8C00; /* Orange accent color */
-    color: white;
+    background-color: var(--action-primary); 
+    color: var(--chat-area-bg); 
     border: none;
-    border-radius: 50%; /* Circular button */
-    width: 60px; /* Match landing page button */
-    height: 60px; /* Match landing page button */
-    display: flex; /* To center SVG */
-    justify-content: center; /* To center SVG */
-    align-items: center; /* To center SVG */
+    border-radius: 50%; 
+    width: 60px; 
+    height: 60px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Match landing page button */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Match landing page button */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
     margin-left: 10px;
-    animation: pulse-orange 2s infinite ease-in-out; /* Add pulse animation */
+    animation: pulse-orange 2s infinite ease-in-out; 
 }
 
 .proceed-nickname-button:hover {
-    background-color: #cc7000; /* Darker orange on hover */
-    transform: translateY(-2px); /* Match landing page button hover */
+    background-color: var(--action-primary-hover); 
+    transform: translateY(-2px); 
 }
 
 .proceed-nickname-button:active {
-    transform: translateY(0px); /* Match landing page button active */
+    transform: translateY(0px); 
 }
 
 .proceed-nickname-button svg {
-    width: 32px; /* Match landing page icon size */
-    height: 32px; /* Match landing page icon size */
-    stroke: white; /* Ensure icon is white */
+    width: 32px; 
+    height: 32px; 
+    stroke: var(--chat-area-bg); 
 }
 
 .terms-text {
   font-size: 0.75em;
-  color: #6c757d;
-  margin-top: 2rem; /* Space above terms */
-  padding-bottom: 1rem; /* Ensure it's not flush with bottom */
+  color: var(--primary-text); 
+  margin-top: 2rem; 
+  padding-bottom: 1rem; 
 }
 
 .terms-text a {
-  color: #007BFF;
+  color: var(--action-primary); 
   text-decoration: none;
 }
 
 .terms-text a:hover {
   text-decoration: underline;
+  color: var(--action-primary-hover);
+}
+
+.logo-small {
+  width: 80px; 
+  height: 80px;
 }

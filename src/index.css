@@ -1,16 +1,62 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Empathetic Color Palette */
+  --page-bg: #FCFDFD;
+  --chat-area-bg: #FFFFFF;
+  --primary-text: #4A5568;
+  --secondary-text: #2D3748;
+  --bot-message-bg: #E6F0FF;
+  --bot-message-text: #2C5282;
+  --user-message-bg: #F0FFF4;
+  --user-message-text: #2F855A;
+  --action-primary: #76D7C4;
+  --action-primary-hover: #5FB0AE;
+  --border-color: #E2E8F0;
+  --placeholder-text: #A0AEC0;
+
+  /* Base Theme Settings */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light; /* Explicitly set to light theme */
+  color: var(--primary-text); /* Apply new primary text color */
+  background-color: var(--page-bg); /* Apply new page background color */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column; /* Allow #root to grow naturally */
+  /* align-items: center; Let #root handle its own max-width and centering */
+  min-width: 320px;
+  min-height: 100vh;
+  /* background-color and color are inherited from :root */
+}
+
+#root {
+  max-width: 1280px; /* Or whatever max-width is desired for the app content */
+  width: 100%;
+  margin: 0 auto; /* Center content if max-width is reached */
+  padding: 0; /* Remove padding, let components handle it */
+  display: flex; /* Allow children to use flex properties like flex-grow */
+  flex-direction: column;
+  flex-grow: 1; /* Make #root take available vertical space */
+  /* text-align: center; - Remove this, let components decide text alignment */
+}
+
+h1 {
+  font-size: 2em; /* Keep size, adjust color if needed */
+  /* color: var(--secondary-text); */ /* Example: Apply new header color */
+  line-height: 1.1;
 }
 
 a {
@@ -20,22 +66,6 @@ a {
 }
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-#root {
-  width: 100%;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
 }
 
 button {
@@ -55,17 +85,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }

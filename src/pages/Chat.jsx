@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Chat.css';
 import { getLLMResponse, isCrisisMessage } from '../services/chatService'; 
 
@@ -6,6 +6,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const chatMessagesRef = useRef(null); // Create a ref for the chat messages container
   const TYPING_SPEED_MS = 100; // Milliseconds per word
   const THINKING_DELAY_MS = 500; // Reduced thinking delay
 
@@ -26,6 +27,13 @@ export default function Chat() {
     return () => clearTimeout(initialTypingTimer); // Cleanup timer on unmount
   }, []); // Empty dependency array means this runs once on mount
 
+  // Effect to scroll to bottom when messages change
+  useEffect(() => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  }, [messages]); // Dependency array includes messages
+
   const typeOutMessage = (fullText, messageId) => {
     return new Promise((resolve) => {
       const words = fullText.split(' '); 
@@ -40,6 +48,15 @@ export default function Chat() {
               msg.id === messageId ? { ...msg, text: currentText } : msg
             )
           );
+
+          // Ensure DOM is updated before trying to get the element
+          requestAnimationFrame(() => {
+            // Scroll to bottom after reflow attempt (now just scrolling)
+            if (chatMessagesRef.current) {
+              chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+            }
+          });
+
           wordIndex++;
           setTimeout(typeNextWord, TYPING_SPEED_MS);
         } else {
@@ -113,15 +130,12 @@ export default function Chat() {
     <div className="page-wrapper">
       <div className="chat-container">
         <div className="chat-header">catbird</div>
-        <div className="chat-messages">
+        <div className="chat-messages" ref={chatMessagesRef}> {/* Assign the ref */}
           {messages.map((msg) => (
             <div key={msg.id} className={`chat-message ${msg.sender}`}>
-              {msg.text.split('\n').map((line, index) => (
-                <React.Fragment key={index}>
-                  {line}
-                  {index < msg.text.split('\n').length - 1 && <br />}
-                </React.Fragment>
-              ))}
+              <div className="message-content-wrapper"> 
+                {msg.text} 
+              </div>
             </div>
           ))}
           {isBotTyping && (
