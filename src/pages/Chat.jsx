@@ -1,54 +1,112 @@
 import React, { useState, useEffect } from 'react';
-import { getLLMResponse } from '../services/chatService';
 import './Chat.css';
-import { isCrisisMessage } from '../services/chatService';
+import { getLLMResponse, isCrisisMessage } from '../services/chatService'; 
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const TYPING_SPEED_MS = 100; // Milliseconds per word
+  const THINKING_DELAY_MS = 500; // Reduced thinking delay
 
   useEffect(() => {
-    // Initial bot message
     const nickname = localStorage.getItem('catbirdNickname');
     const greetingName = nickname ? nickname : 'there';
+    const initialMessageId = 'initial-greeting';
+    const fullGreeting = `Hi ${greetingName}. I’m here to support you. How are you feeling today?`;
 
-    setMessages([
-      { sender: 'bot', text: `Hi ${greetingName}. I’m here to support you. How are you feeling today?` }
-    ]);
-  }, []);
+    // Set an empty message first, then type it out
+    setMessages([{ id: initialMessageId, sender: 'bot', text: '' }]);
+    
+    // Start typing after a short delay to allow component to mount and be visible
+    const initialTypingTimer = setTimeout(() => {
+      typeOutMessage(fullGreeting, initialMessageId);
+    }, 300); // Short delay before initial greeting starts typing
+
+    return () => clearTimeout(initialTypingTimer); // Cleanup timer on unmount
+  }, []); // Empty dependency array means this runs once on mount
+
+  const typeOutMessage = (fullText, messageId) => {
+    return new Promise((resolve) => {
+      const words = fullText.split(' '); 
+      let currentText = '';
+      let wordIndex = 0;
+
+      function typeNextWord() {
+        if (wordIndex < words.length) {
+          currentText += (wordIndex > 0 ? ' ' : '') + words[wordIndex];
+          setMessages(prevMessages =>
+            prevMessages.map(msg =>
+              msg.id === messageId ? { ...msg, text: currentText } : msg
+            )
+          );
+          wordIndex++;
+          setTimeout(typeNextWord, TYPING_SPEED_MS);
+        } else {
+          resolve(); 
+        }
+      }
+      typeNextWord();
+    });
+  };
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const newMessage = { sender: 'user', text: input };
-    setMessages([...messages, newMessage]);
+    const userMessage = { id: Date.now(), sender: 'user', text: input };
+    setMessages(prevMessages => [...prevMessages, userMessage]);
+    const currentInput = input;
     setInput('');
 
-    // 👉 Crisis Detection
-    if (isCrisisMessage(input)) {
+    if (isCrisisMessage(currentInput)) {
       const crisisReply = {
+        id: Date.now() + '_crisis',
         sender: 'bot',
         text: "I'm really sorry you're feeling this way. You're not alone. Please consider contacting a crisis line or talking to someone you trust.",
       };
       const resources = {
+        id: Date.now() + '_resources',
         sender: 'bot',
         text: " **Helpline:** 988 (U.S. Suicide & Crisis Lifeline)\n [Find local help](https://www.opencounseling.com/suicide-hotlines)",
       };
       setMessages(prev => [...prev, crisisReply, resources]);
-    return;
-  }
+      return;
+    }
 
-    setIsBotTyping(true);
+    setIsBotTyping(true); // Show typing indicator for thinking/fetching
+    const botMessageId = Date.now() + '_bot_response';
+
     try {
-      const botReply = await getLLMResponse(input);
-      setMessages(prev => [...prev, { sender: 'bot', text: botReply.text }]);
+      // Artificial thinking delay
+      await new Promise(resolve => setTimeout(resolve, THINKING_DELAY_MS));
+
+      // Now get the response
+      const botReply = await getLLMResponse(currentInput);
+      
+      setIsBotTyping(false); // Hide three-dot indicator before word-by-word typing starts
+
+      // Add a placeholder for the bot's message first, then type it out
+      setMessages(prev => [...prev, { id: botMessageId, sender: 'bot', text: '' }]);
+      await typeOutMessage(botReply.text, botMessageId);
     } catch (error) {
       console.error("Error getting LLM response:", error);
-      setMessages(prev => [...prev, { sender: 'bot', text: "Sorry, I'm having a little trouble connecting. Please try again in a moment." }]);
-    } finally {
-      setIsBotTyping(false);
-    }
+      setIsBotTyping(false); // Ensure indicator is off on error
+      // Check if botMessageId was added to messages before erroring
+      const messageExists = messages.some(msg => msg.id === botMessageId);
+      if (messageExists) {
+        setMessages(prev => 
+          prev.map(msg => 
+            msg.id === botMessageId 
+              ? { ...msg, text: "Sorry, I'm having a little trouble connecting. Please try again in a moment." } 
+              : msg
+          )
+        );
+      } else {
+        // If placeholder wasn't added, add a new error message
+        setMessages(prev => [...prev, { id: botMessageId, sender: 'bot', text: "Sorry, I'm having a little trouble connecting. Please try again in a moment." }])
+      }
+    } 
+    // The finally block for setIsBotTyping(false) is removed as it's handled in try (after fetch) and catch.
   };
 
   return (
@@ -56,13 +114,18 @@ export default function Chat() {
       <div className="chat-container">
         <div className="chat-header">catbird</div>
         <div className="chat-messages">
-          {messages.map((msg, i) => (
-            <div key={i} className={`chat-message ${msg.sender}`}>
-              {msg.text}
+          {messages.map((msg) => (
+            <div key={msg.id} className={`chat-message ${msg.sender}`}>
+              {msg.text.split('\n').map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  {index < msg.text.split('\n').length - 1 && <br />}
+                </React.Fragment>
+              ))}
             </div>
           ))}
           {isBotTyping && (
-            <div className="chat-message bot typing-indicator">
+            <div key="typing-indicator" className="chat-message bot typing-indicator">
               <span></span>
               <span></span>
               <span></span>

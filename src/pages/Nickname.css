@@ -23,11 +23,9 @@
 .nickname-content-box {
   display: flex;
   flex-direction: column;
-  /* height: 85vh; Let content define height, or set a min-height */
-  min-height: 75vh; /* Adjusted for potentially less content than chat */
-  max-height: 90vh;
+  height: 85vh; /* Match Landing/Chat page container height */
   width: 100%; 
-  max-width: 500px; /* Slightly narrower than chat if desired, or match */
+  max-width: 600px; /* Match Landing/Chat page container max-width */
   margin: auto; 
   padding: 1.5rem 2rem; /* Slightly more padding perhaps */
   background: #ffffff; 

@@ -73,6 +73,7 @@ body {
   background-color: #e0f2fe;
   align-self: flex-start;
   color: #1e3a8a;
+  text-align: left; /* Ensure text content is left-aligned */
 }
 
 .chat-message.user {
