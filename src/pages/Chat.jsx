@@ -10,8 +10,11 @@ export default function Chat() {
 
   useEffect(() => {
     // Initial bot message
+    const nickname = localStorage.getItem('catbirdNickname');
+    const greetingName = nickname ? nickname : 'there';
+
     setMessages([
-      { sender: 'bot', text: 'Hi there. I’m here to support you. How are you feeling today?' }
+      { sender: 'bot', text: `Hi ${greetingName}. I’m here to support you. How are you feeling today?` }
     ]);
   }, []);
 
