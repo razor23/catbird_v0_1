@@ -25,15 +25,20 @@
 
 .chat-header {
   text-align: center;
-  padding: 0.75rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--secondary-text); /* Was #374151 */
-  border-bottom: 1px solid var(--border-color); /* Was #e5e7eb */
+  padding: 0.75rem; /* May need adjustment */
+  border-bottom: 1px solid var(--border-color); 
   margin-bottom: 1rem;
-  max-width: 100%; /* Ensure header does not exceed parent's content width */
-  box-sizing: border-box; /* Include padding/border in max-width calculation */
-  overflow-x: clip; /* Prevent horizontal overflow */
+  max-width: 100%; 
+  box-sizing: border-box; 
+  overflow-x: clip; 
+}
+
+.chat-header-logo {
+  height: 40px; /* Adjust as needed */
+  width: auto;
+  display: block; /* For centering with margin auto if text-align:center on parent isn't enough */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .chat-messages {

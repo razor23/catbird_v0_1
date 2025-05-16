@@ -129,7 +129,9 @@ export default function Chat() {
   return (
     <div className="page-wrapper">
       <div className="chat-container">
-        <div className="chat-header">catbird</div>
+        <div className="chat-header">
+          <img src="/assets/Catbird-removebg-preview.png" alt="Catbird Logo" className="chat-header-logo" />
+        </div>
         <div className="chat-messages" ref={chatMessagesRef}> {/* Assign the ref */}
           {messages.map((msg) => (
             <div key={msg.id} className={`chat-message ${msg.sender}`}>

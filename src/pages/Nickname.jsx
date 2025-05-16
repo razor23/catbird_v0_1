@@ -39,19 +39,7 @@ export default function Nickname() {
 
           <div className="nickname-input-area">
             <div className="catbird-peek">
-              {/* Placeholder Catbird SVG - same as landing page */}
-              <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="logo-small">
-                <defs>
-                  <linearGradient id="birdGradientNick" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#81D4FA', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#03A9F4', stopOpacity: 1 }} />
-                  </linearGradient>
-                </defs>
-                <path d="M20,70 C20,40 50,20 80,50 C70,80 40,85 20,70 Z" fill="url(#birdGradientNick)"/>
-                <circle cx="70" cy="40" r="8" fill="#FFFFFF"/>
-                <circle cx="72" cy="39" r="3" fill="#263238"/> 
-                <path d="M15,65 Q30,55 45,68" stroke="#B0BEC5" strokeWidth="5" fill="none" strokeLinecap="round"/>
-              </svg>
+              <img src="/assets/Catbird-removebg-preview.png" alt="Catbird Mascot" className="logo-small" />
             </div>
             <input 
               type="text"

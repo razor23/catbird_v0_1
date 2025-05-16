@@ -50,8 +50,9 @@
 
 .nickname-input-area {
   position: relative;
-  margin-top: 1rem; 
-  margin-bottom: auto; 
+  margin-top: 1rem;
+  padding-top: 50px; /* Increased to make more space for the peeking logo */
+  margin-bottom: auto;
   display: flex;
   align-items: center;
   width: 100%;
@@ -64,6 +65,12 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
+}
+
+.logo-small {
+  height: 80px;
+  width: 80px; /* Or 'auto' if you want to maintain aspect ratio based on height only */
+  display: block; /* Ensures it behaves as a block element for positioning */
 }
 
 .nickname-input {
@@ -139,9 +146,4 @@
 .terms-text a:hover {
   text-decoration: underline;
   color: var(--action-primary-hover);
-}
-
-.logo-small {
-  width: 80px; 
-  height: 80px;
 }
