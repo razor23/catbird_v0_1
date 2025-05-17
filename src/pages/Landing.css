@@ -57,7 +57,9 @@ body, html {
     /* Optional: add a light circular background like the Wysa logo */
     /* background-color: #e0f2f7; */
     /* border-radius: 50%; */
-    padding: 10px; /* If using background */
+    /* padding: 10px; */ /* If using background */
+    width: 120px; /* Adjust as needed */
+    height: auto; /* Maintain aspect ratio */
 }
 
 h1 {
@@ -65,10 +67,12 @@ h1 {
     font-weight: 600;
     color: #4A4A4A; /* Dark grey, not quite black */
     margin: 20px 0 10px 0;
+    opacity: 0; /* Start hidden for animation */
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .catbird-name {
-    color: #007BFF; /* A nice blue for 'catbird' */
+    color: var(--action-primary); /* Use theme variable for consistency */
     font-weight: 700;
 }
 
@@ -77,6 +81,8 @@ h1 {
     color: #6c757d; /* Softer grey for tagline */
     line-height: 1.6;
     margin-bottom: 40px;
+    opacity: 0; /* Start hidden for animation */
+    animation: fadeInUp 0.8s ease-out 0.3s forwards; /* 0.3s delay */
 }
 
 .proceed-button {
@@ -94,6 +100,17 @@ h1 {
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: auto; /* Push to the bottom of the flex container */
     animation: pulse-orange 2s infinite ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse-orange {

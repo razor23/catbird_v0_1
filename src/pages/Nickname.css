@@ -67,6 +67,15 @@
   z-index: 1;
 }
 
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px rgba(118, 215, 196, 0.5), 0 0 10px rgba(118, 215, 196, 0.3);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(118, 215, 196, 0.8), 0 0 25px rgba(118, 215, 196, 0.5);
+  }
+}
+
 .logo-small {
   height: 80px;
   width: 80px; /* Or 'auto' if you want to maintain aspect ratio based on height only */
@@ -86,6 +95,7 @@
   position: relative;
   z-index: 0;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  animation: glow 2s infinite alternate ease-in-out;
 }
 
 .nickname-input::placeholder {
