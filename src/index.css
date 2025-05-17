@@ -53,6 +53,54 @@ body {
   /* text-align: center; - Remove this, let components decide text alignment */
 }
 
+.transition-group-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1; /* Ensure it expands in the #root flex container */
+  overflow: hidden; /* Optional: to prevent scrollbars during transition if content overflows */
+}
+
+.page-transition-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.page-transition-enter-active {
+  /* The div that CSSTransition applies classes to will wrap the actual page component */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 250ms ease-in-out, transform 250ms ease-in-out;
+}
+
+.page-transition-exit {
+  /* The div that CSSTransition applies classes to will wrap the actual page component */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-transition-exit-active {
+  /* The div that CSSTransition applies classes to will wrap the actual page component */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 250ms ease-in-out, transform 250ms ease-in-out;
+}
+
 h1 {
   font-size: 2em; /* Keep size, adjust color if needed */
   /* color: var(--secondary-text); */ /* Example: Apply new header color */
@@ -85,4 +133,8 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (max-width: 768px) {
+  /* Additional responsive design considerations */
 }
